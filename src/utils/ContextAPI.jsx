@@ -7,7 +7,7 @@ export const ContextAPI = createContext();
 const ContextTheme = ({ children }) => {
 
     const [theme, setTheme] = useState('light');
-    const [user, setUser] = useState(null); // ✅ no localStorage
+    const [user, setUser] = useState(null); 
     const [loading, setLoading] = useState(true);
 
     const toogleTheme = (value) => {
