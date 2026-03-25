@@ -9,7 +9,7 @@ import { BounceLoader } from 'react-spinners'
 
 const Dashboard = () => {
 
-  const { theme, user } = useContext(ContextAPI); // ✅ user yahan se lo
+  const { theme, user, loading } = useContext(ContextAPI); // ✅ loading add
   const [modal, setModal] = useState(false);
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -25,7 +25,7 @@ const Dashboard = () => {
   // ✅ Fetch Data
   const fetchdataFunc = async () => {
 
-    if (!user) return; // 🔥 wait for user
+    if (!user) return;
 
     setLoader(true)
 
@@ -34,7 +34,7 @@ const Dashboard = () => {
 
       const q = query(
         listref,
-        where('addedBy', "==", user.uid) // ✅ FIXED
+        where('addedBy', "==", user.uid)
       );
 
       const querysnapshot = await getDocs(q);
@@ -53,10 +53,12 @@ const Dashboard = () => {
     }
   }
 
-  // ✅ run when user loads
+  // ✅ run only when user ready
   useEffect(() => {
-    fetchdataFunc()
-  }, [user]) // 🔥 IMPORTANT
+    if (user) {
+      fetchdataFunc()
+    }
+  }, [user])
 
   // ✅ Delete
   const deleteItem = async (id) => {
@@ -78,6 +80,19 @@ const Dashboard = () => {
         setLoader(false)
       }
     }
+  }
+
+  // ✅ 🔥 MAIN FIX (refresh error solved)
+  if (loading) {
+    return (
+      <div className={classes.loader}>
+        <BounceLoader color={theme === 'light' ? 'black' : 'white'} />
+      </div>
+    )
+  }
+
+  if (!user) {
+    return <h1>Please login again</h1>
   }
 
   return (
@@ -121,7 +136,7 @@ const Dashboard = () => {
           theme={theme}
           closeopenmodal={closeOpenModel}
           editData={editData}
-          refreshData={fetchdataFunc} // 🔥 ye add karo
+          refreshData={fetchdataFunc} // ✅ important
         />
       }
 
