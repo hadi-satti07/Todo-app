@@ -14,21 +14,14 @@ const ContextTheme = ({children})=>{
        setTheme(value)
     }
 
-    useEffect(()=>{
-        const subscribe = async () => {
-           try{
-             await onAuthStateChanged(auth, (userData)=>{
-                setUser(userData)
-            })
-           }catch(err){
-            alert(err.message)
-           }finally{
-            setLoading(false)
-           }
-        }
+    useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (userData) => {
+    setUser(userData);
+    setLoading(false); // 🔥 yahan hona chahiye
+  });
 
-        return ()=> subscribe();
-    },[])
+  return () => unsubscribe(); // cleanup
+}, []);
     return(
         <ContextAPI.Provider value={{theme,toogleTheme, user, loading}}>
             {children}
