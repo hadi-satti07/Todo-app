@@ -121,6 +121,7 @@ const Dashboard = () => {
           theme={theme}
           closeopenmodal={closeOpenModel}
           editData={editData}
+          refreshData={fetchdataFunc} // 🔥 ye add karo
         />
       }
 

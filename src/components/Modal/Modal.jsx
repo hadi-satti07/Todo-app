@@ -4,7 +4,7 @@ import { doc, collection, addDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../utils/firebase';
 import { ContextAPI } from '../../utils/ContextAPI';
 
-const Modal = ({ theme, closeopenmodal, editData }) => {
+const Modal = ({ theme, closeopenmodal, editData, refreshData }) => {
 
     const [inputField, setInputField] = useState({
         title: '',
@@ -29,7 +29,8 @@ const Modal = ({ theme, closeopenmodal, editData }) => {
                 addedBy: user.uid
             });
 
-            closeopenmodal(); // ✅ modal close
+            refreshData();      // 🔥 NEW
+            closeopenmodal();   // close modal
 
         } catch (err) {
             alert(err.message)
@@ -56,7 +57,7 @@ const Modal = ({ theme, closeopenmodal, editData }) => {
             inputField.priority.length === 0
         ) {
             alert('Please Fill All The Details');
-            return; // ✅ important fix
+            return;
         }
 
         if (editData) {
@@ -77,7 +78,8 @@ const Modal = ({ theme, closeopenmodal, editData }) => {
                 priority: inputField.priority
             });
 
-            closeopenmodal(); // ✅ modal close
+            refreshData();      // 🔥 NEW
+            closeopenmodal();
 
         } catch (err) {
             alert(err.message)
